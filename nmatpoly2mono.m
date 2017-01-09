@@ -1,4 +1,4 @@
-function p = nmatpoly2mono(nmat,midfile)
+function p = nmatPoly2mono(nmat,midfile)
 %parses polyphonic nmat (note matrices) of midi into separate note matrices.
 %nmat = source
 %n = number of voices
@@ -30,14 +30,14 @@ durs=nmat(:,2);
 onsetuniq=unique(onsets);
 onsetincr=[];
 for i=2:numel(onsetuniq)
-    onsetincr(end+1)=onsetuniq(i)-onsetuniq(i-1)
+    onsetincr(end+1)=onsetuniq(i)-onsetuniq(i-1);
 end
-onsetincrmode=mode(onsetincr)
+onsetincrmode=mode(onsetincr);
 % while onsetincrmode < .8
 %     onsetincrmode=onsetincrmode*2
 % end
 
-makemodeincrone=1/onsetincrmode
+makemodeincrone=1/onsetincrmode;
 onsets=onsets*makemodeincrone;
 durs=durs*makemodeincrone;
 
@@ -54,8 +54,8 @@ nmat(:,2)=durs;
 %identify number of channels and separate
 channelcolumn=nmat(:,3);
 channels=unique(channelcolumn);
-for i=1:numel(channels);
-    ind=find(channelcolumn==channels(i));
+for i=1:numel(channels)
+    ind= channelcolumn==channels(i);
     chanmat{i}=nmat(ind,:);
 end
 
@@ -111,7 +111,7 @@ if sum(chanismono) < numel(chanmat)
             if numel(uonsetdurs) > 1
                 onsetuniq(d-1)
                 inequal=inequal+1;
-                newonsetdur=min(onsetdurs)
+                newonsetdur=min(onsetdurs);
                 for j=1:numel(onsetdurs)
                     if onsetdurs(j)~=newonsetdur
                         onsrem=onsetdurs(j)-newonsetdur;
@@ -144,7 +144,7 @@ if sum(chanismono) < numel(chanmat)
             end
         end
         thischan(:,1)=onsets;
-        onsetuniq=unique(onsets)
+        onsetuniq=unique(onsets);
         onsetcount=zeros(numel(onsetuniq),1);
         for j=1:numel(onsetuniq)
             onsetcount(j,1)=numel(find(onsets==onsetuniq(j)));
@@ -273,14 +273,14 @@ if sum(chanismono) < numel(chanmat)
                     previous=thischan(ind,:);
                     prevpitches=previous(:,4);
                     clearvars diffsum
-                    for k=1:numel(pitches);
+                    for k=1:numel(pitches)
                         clearvars pitchdiff
                         for l=1:numel(prevpitches)
                             pitchdiff(l)=abs(pitches(k)-prevpitches(l));
                         end
                         diffsum(k)=sum(pitchdiff,2);
                     end
-                    [val loc]=max(diffsum);
+                    [val, loc]=max(diffsum);
                     thischan(ind2(loc),:)=[];
                     %                     for k=1:numel(prevpitches);
                     %                         newrow=thischan(ind2,:);
@@ -295,7 +295,7 @@ if sum(chanismono) < numel(chanmat)
         
         if onsetcount(1) > numvoicesinchan
             
-            for j=2:numel(onsetcount);
+            for j=2:numel(onsetcount)
                 if onsetcount(j)==numvoicesinchan
                     break
                 end
@@ -312,7 +312,7 @@ if sum(chanismono) < numel(chanmat)
                 end
                 diffsum(k)=sum(pitchdiff,2);
             end
-            [val loc]=max(diffsum);
+            [val, loc]=max(diffsum);
             thischan(ind(loc),:)=[];
             
         end
@@ -364,12 +364,12 @@ if sum(chanismono) < numel(chanmat)
                         previous=thischan(ind,:);
                         clearvars pitchdiff
                         prevpitches=previous(:,4);
-                        for k=1:numel(prevpitches);
+                        for k=1:numel(prevpitches)
                             pitchdiff(k)=abs(pitch-prevpitches(k));
                         end
-                        [val loc]=min(pitchdiff);
+                        [val, loc]=min(pitchdiff);
                         prevpitches(loc)=[];
-                        for k=1:numel(prevpitches);
+                        for k=1:numel(prevpitches)
                             newrow=thischan(ind2,:);
                             newrow(1,4)=prevpitches(k);
                             thischan(end+1,:)=newrow;
@@ -412,11 +412,11 @@ if sum(chanismono) < numel(chanmat)
         %delete too many or too few
         
         for d=length(onsetuniq):-1:2
-            if onsetcount(d) < numvoicesinchan || onsetcount(d) > numvoicesinchan; % this needs be more delicate
+            if onsetcount(d) < numvoicesinchan || onsetcount(d) > numvoicesinchan % this needs be more delicate
                 
                 clearvars ind
                 ind=find(onsets==onsetuniq(d));
-                for z=length(ind):-1:1;
+                for z=length(ind):-1:1
                     thischan(ind(z),:)=[];
                 end
             end
@@ -443,7 +443,7 @@ if sum(chanismono) < numel(chanmat)
         thischan(:,1)=onsets;
         onsetuniq=unique(onsets);
         numonsets=numel(onsetuniq);
-        for j=1:numvoicesinchan;
+        for j=1:numvoicesinchan
             newchan{j}=nan(numonsets,7);
         end
         for j=1:numonsets
@@ -557,7 +557,7 @@ hmm=SortIndex;
 
 nmat=[];
 p.v=[];
-for j=1:n;
+for j=1:n
     p.v{j}=v{SortIndex(n+1-j)};
     p.v{j}(:,3)=(j)*(ones(size(p.v{j},1),1));
     nmat=vertcat(nmat,p.v{j}); %reconstitute nmat

@@ -1,4 +1,4 @@
-function motion=motion2D(v,object,frameinterval)
+function motion=motion2D(v,nameofobject,frameinterval)
 
 framecount=v.obj.NumberOfFrames;
 
@@ -7,7 +7,7 @@ screensize = get( groot, 'Screensize' );
 set(fig,'Color','w','Name',v.filename,'Position', screensize*.9);
 for i=1:framecount/frameinterval
     imagesc(v.video(:,:,:,i*frameinterval));
-    title(strcat('\fontsize{32}','"',object,'" tracking: frame',sprintf(' %d',i*frameinterval),' of', ...
+    title(strcat('\fontsize{32}','"',nameofobject,'" tracking: frame',sprintf(' %d',i*frameinterval),' of', ...
     sprintf(' %d',framecount), ...
     ' frames at interval of',sprintf(' %d',frameinterval)));
     try
@@ -22,7 +22,7 @@ end
 close(figure(1))
 
 motion=[time',x',y'];
-save(strcat(v.filename,'_',object,'_fr',num2str(frameinterval),...
+save(strcat(v.filename,'_',nameofobject,'_fr',num2str(frameinterval),...
     '.mat'),'motion');
 
 end
